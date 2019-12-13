@@ -1,0 +1,42 @@
+.product-form{
+    // border-bottom: 1px solid black;
+    padding: 20px 0px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    .form-group{
+        margin-top: 20px;
+        padding: 0px 20px;
+    }
+    .ingredients{
+        // cursor: pointer;
+        position: relative;
+        &:hover{
+            border:2px dashed lightgrey;
+            .add-ingredient-btn-wrapper{
+                display: flex;
+            }
+        }
+        .add-ingredient-btn-wrapper{
+            position: absolute;
+            bottom:-10px;
+            width: 100%;
+            display: none;
+            justify-content: center;
+            .add-ingredient-btn{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border:2px dotted grey;
+                background-color: lightgrey;
+                border-radius: 100%;
+                width: 20px;
+                height: 20px;
+                font-weight: bolder;
+                padding: 0 0px 2px 1px;
+                cursor: pointer;
+                color: grey;
+                z-index: 1;
+            }
+        }
+    }
+}
