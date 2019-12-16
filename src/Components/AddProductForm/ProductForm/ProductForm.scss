@@ -10,6 +10,7 @@
     .ingredients{
         // cursor: pointer;
         position: relative;
+        padding: 10px 0px;
         &:hover{
             border:2px dashed lightgrey;
             .add-ingredient-btn-wrapper{
@@ -35,7 +36,16 @@
                 padding: 0 0px 2px 1px;
                 cursor: pointer;
                 color: grey;
-                z-index: 1;
+                z-index: 10;
+                .add-ingredient-menu{
+                    bottom: 100%;
+                    display: none;
+                    position: absolute;
+                    z-index: 10;
+                }
+                .add-ingredient-menu.show{
+                    display: block;
+                }
             }
         }
     }

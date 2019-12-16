@@ -1,0 +1,61 @@
+.choose-ingredient-modal{
+    position: fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:11;
+    justify-content: center;
+    align-items: center;
+    .dark-overlay{
+        background-color: black;
+        opacity: 0;
+        position: absolute;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        animation: modal-popup-anim 1s;
+        animation-fill-mode: forwards;
+    }
+    .choose-ingredient-modalbox{
+        background-color: white;
+        position: relative;
+        padding: 30px 30px;
+        .close-btn-wrapper{
+            position: absolute;
+            display: flex;
+            opacity: 1;
+            justify-content: flex-end;
+            align-items: center;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 11;
+            transition: 0.2s;
+            padding: 10px 15px;
+            .close-btn{
+                border-radius: 100%;
+                position: relative;
+                color:black;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-weight: bolder;
+                font-size: 18px;
+                cursor: pointer;
+                padding-bottom: 2px;
+            }
+        }
+    }
+    
+}
+
+@keyframes modal-popup-anim{
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 0.5;
+    }
+}

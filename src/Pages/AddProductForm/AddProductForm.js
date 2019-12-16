@@ -3,7 +3,9 @@ import React, { Component } from "react";
 // eslint-disable-next-line
 import ProductForm from "../../Components/AddProductForm/ProductForm/ProductForm";
 import { connect } from "react-redux";
-import { addProductHandler } from "../../Redux/Actions";
+import { addProductHandler,setError } from "../../Redux/Actions";
+import { createIngredientFieldsObject, isProductEmpty } from "../../Helpers/helperMethods";
+import ChooseIngredient from "../../Components/AddProductForm/Modals/ChooseIngredient/ChooseIngredient";
 
 class AddProductForm extends Component {
     state = {
@@ -28,6 +30,32 @@ class AddProductForm extends Component {
             });
         }
     }
+
+    addNewProduct = () => {
+        let isEmpty = {isempty:false,errors:null}
+
+        for (let i = 0; i < this.props.products.length; i++){
+            isEmpty = isProductEmpty(this.props.products[i])
+            if (isEmpty.isempty) {
+                break;
+            }
+        }
+        if (isEmpty.isempty) {
+            alert("Fill All Products And Ingredients")
+            this.props.setError(isEmpty.errors.key,isEmpty.errors.value)
+            return false
+        }
+        
+        let productName= "product" + (this.props.products.length + 1)
+        this.props.addProductHandler(
+            {
+                productName: productName,
+                productValue: "",
+                productIngredients: [createIngredientFieldsObject(productName,0)]
+            }
+        )
+    }
+
     onTextChangeHandler = e => {
         this.setState({
             [e.target.name]: e.target.value
@@ -43,6 +71,7 @@ class AddProductForm extends Component {
                     name={product.productName}
                     value={product.productValue}
                     ingredients={product.productIngredients}
+                    productIndex={index}
                 />
             );
         });
@@ -62,20 +91,7 @@ class AddProductForm extends Component {
                                 <button
                                     className="btn btn-primary form-control"
                                     type="button"
-                                    onClick={() =>
-                                        this.props.addProductHandler(
-                                            {
-                                                productName: "product" + (this.props.products.length + 1),
-                                                productValue: "",
-                                                productIngredients: [{
-                                                    ingredientName: this.productName + ("ingredient" + 1),
-                                                    ingredientValue: "",
-                                                    ingredientFilename: this.productName + ("ingredientfile" + 1),
-                                                    ingredientFilevalue:""
-                                                }]
-                                            }
-                                        )
-                                    }
+                                    onClick={this.addNewProduct}
                                 >
                                     Add More Products
                                 </button>
@@ -83,6 +99,7 @@ class AddProductForm extends Component {
                         </form>
                     </div>
                 </div>
+                <ChooseIngredient/>
             </div>
         );
     }
@@ -92,4 +109,4 @@ const mapStateToProps = state => {
     return state.addProductReducer;
 };
 
-export default connect(mapStateToProps, { addProductHandler })(AddProductForm);
+export default connect(mapStateToProps, { addProductHandler,setError })(AddProductForm);
