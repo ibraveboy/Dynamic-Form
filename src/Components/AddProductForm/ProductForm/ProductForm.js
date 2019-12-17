@@ -6,7 +6,8 @@ import {
     addProductHandler,
     addIngredientHandler,
     openChooseIngredientModal,
-    setError
+    setError,
+    deleteProductHandler
 } from "../../../Redux/Actions";
 import IngredientForm from "../IngredientForm/IngredientForm";
 import { createIngredientFieldsObject } from "../../../Helpers/helperMethods";
@@ -29,11 +30,10 @@ class ProductForm extends Component {
     addIngredientClickHandler = e => {
         let err = ""
         this.props.ingredients.forEach(ingredient => {
-            // || ingredient.ingredientFilevalue === "" || ingredient.ingredientSupplierValue === ""
-            if (ingredient.ingredientValue === "") {
+            // || ingredient.specSheet === "" || ingredient.supplierName === ""
+            if (ingredient.name === "") {
                 alert("Fill all the fields of ingredient added before.")
-                this.props.setError(ingredient.ingredientName,"This field is required.")
-                
+                this.props.setError(ingredient._id+"-name","This field is required.")
                 err=true
                 return false
             }
@@ -41,10 +41,7 @@ class ProductForm extends Component {
         if (err)
             return false
         this.props.addIngredientHandler(
-            createIngredientFieldsObject(
-                this.props.name,
-                this.props.ingredients.length
-            ),
+            createIngredientFieldsObject(),
             this.props.productIndex
         );
     };
@@ -55,21 +52,28 @@ class ProductForm extends Component {
         this.props.openChooseIngredientModal(this.props.productIndex)
     }
 
+    // Delete Product
+    deleteProduct = () => {
+        if (this.props.products.length === 1) {
+            alert("There is only one product.")
+            return false
+        }
+        if (window.confirm("This action cannot be undone. Do you really want to delete?")) {
+            this.props.deleteProductHandler(this.props.productIndex,this.props.id)
+        } 
+
+    }
     render() {
 
         const { errors,ingredients } = this.props
-        console.log(errors);
-        
         let allIngredients = ingredients.map((ingredient, index) => {
             return (
                 <IngredientForm
-                    key={ingredient.ingredientName}
-                    name={ingredient.ingredientName}
-                    filename={ingredient.ingredientFilename}
-                    suppliername={ingredient.ingredientSupplierName}
-                    value={ingredient.ingredientValue}
-                    filevalue={ingredient.ingredientFilevalue}
-                    suppliervalue={ingredient.ingredientSupplierValue}
+                    key={ingredient._id}
+                    id={ingredient._id}
+                    value={ingredient.name}
+                    filevalue={ingredient.specSheet}
+                    suppliervalue={ingredient.supplierName}
                     ingredientIndex={index}
                     productIndex={this.props.productIndex}
                 />
@@ -77,23 +81,45 @@ class ProductForm extends Component {
         });
         return (
             <div className="product-form">
+                <p className="text-justify">
+                    For each product, list <b> ALL </b> ingredients and supplier
+                    names (including source ingredients, manufactured
+                    ingredients, and GMO ingredients that may involve
+                    animal substances). Please also include ALL
+                    <b> insignificant</b> ingredients ( <span className="text-danger"> including those weighing
+                    less than 0.5 grams per serving </span> ) and <b>incidental </b> 
+                    ingredients ( <span className="text-danger"> ingredients that could have
+                    incidentally ended up in the final product during
+                    the manufacturing or production process. </span> )
+                </p>
                 <fieldset>
-                    <legend> {this.props.value || "Product Title"} </legend>
+                    <legend>
+                        {this.props.value || "Product Title"}
+                        <div className="col-12 product-close-wrapper">
+                            <span
+                                className="close-btn bg-danger"
+                                title="Remove Product"
+                                onClick={this.deleteProduct}
+                            >
+                                Delete Product
+                            </span>
+                        </div>
+                    </legend>
                     <div className="form-group mt-0">
+                        
                         <input
                             type="text"
-                            name={this.props.name}
-                            className={"form-control "+(errors?(errors[this.props.name]?"is-invalid":""):"")}
-                            id="formGroupExampleInput"
+                            name="name"
+                            className={"form-control "+(errors?(errors[this.props.id+"-name"]?"is-invalid":""):"")}
                             value={this.props.value}
                             placeholder="Enter Product Title"
                             onChange={e =>
-                                this.props.productTitleChangeHandler(e)
+                                this.props.productTitleChangeHandler(e,this.props.productIndex)
                             }
                         />
-                        {(errors ? (errors[this.props.name] ? (
+                        {(errors ? (errors[this.props.id+"-name"] ? (
                             <small className="text-danger">
-                                {errors[this.props.name]}           
+                                {errors[this.props._id]}           
                             </small>
                         ):null):null)}
                     </div>
@@ -148,7 +174,7 @@ class ProductForm extends Component {
                         
                     </div>
                 </fieldset>
-
+                
             </div>
         );
     }
@@ -163,5 +189,6 @@ export default connect(mapStateToProps, {
     addProductHandler,
     addIngredientHandler,
     openChooseIngredientModal,
-    setError
+    setError,
+    deleteProductHandler
 })(ProductForm);

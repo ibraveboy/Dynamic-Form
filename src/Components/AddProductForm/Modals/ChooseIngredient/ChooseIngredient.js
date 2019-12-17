@@ -21,20 +21,20 @@ class ChooseIngredient extends Component {
         // if ingredient is selected
         // The Ingredient Object that is selected by the user
 
-        let ingredient = this.props.products[this.state.selectedIngredientProductIndex].productIngredients[this.state.selectedIngredientIndex]
+        let ingredient = this.props.products[this.state.selectedIngredientProductIndex].ingredients[this.state.selectedIngredientIndex]
 
         // All the ingredients of the current product 
 
-        let ingredientsTemp = this.props.products[this.props.productIndexForChooseIngredientModal].productIngredients
+        let ingredientsTemp = this.props.products[this.props.productIndexForChooseIngredientModal].ingredients
 
         // If there is only one ingredient
         if (ingredientsTemp.length === 1) {
 
-            let ingredientTemp = this.props.products[this.props.productIndexForChooseIngredientModal].productIngredients[0]
+            let ingredientTemp = ingredientsTemp[0]
             
             //if that one ingredient of the current product is empty then replace it with the selected one
             
-            if (ingredientTemp.ingredientValue === "" && ingredientTemp.ingredientFilevalue === "" && ingredientTemp.ingredientSupplierValue === "") {
+            if (ingredientTemp.name === "" && ingredientTemp.specSheet === "" && ingredientTemp.supplierName === "") {
                 this.props.replaceIngredientHandler(ingredient,this.props.productIndexForChooseIngredientModal,0)
             } else {
                 //Otherwise add the ingredient into current product
@@ -51,7 +51,7 @@ class ChooseIngredient extends Component {
                 // || ingredient.ingredientFilevalue === "" || ingredient.ingredientSupplierValue === ""
 
                 //If unfilled field found then alert
-                if (ingredient.ingredientValue === "") {
+                if (ingredient.name === "") {
                     alert("File all the fields of ingredients added before.")
                     err=true
                     return false
@@ -93,10 +93,10 @@ class ChooseIngredient extends Component {
         for (let i = 0; i < this.props.products.length; i++){
             if (this.props.productIndexForChooseIngredientModal === i)
                 continue
-            this.props.products[i].productIngredients.forEach((ingredient, index) => {
+            this.props.products[i].ingredients.forEach((ingredient, index) => {
                 options.push(
-                    <option value={index+" "+i} key={ingredient.ingredientName}>
-                        {ingredient.ingredientValue||"Name not available"}
+                    <option value={index+" "+i} key={ingredient._id}>
+                        {ingredient.name||"Name not available"}
                     </option>
                 )
             })

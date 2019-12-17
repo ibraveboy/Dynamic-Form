@@ -1,6 +1,42 @@
-import { ADD_PRODUCT,PRODUCT_TITLE_CHANGE, ADD_INGREDIENT, INGREDIENT_FIELD_CHANGE, OPEN_CHOOSE_INGREDIENT_MODAL, CLOSE_CHOOSE_INGREDIENT_MODAL, REPLACE_INGREDIENT, SET_ERROR, INGREDIENT_FILE_UPLOAD } from "../Constants"
+import { ADD_PRODUCT,PRODUCT_TITLE_CHANGE, ADD_INGREDIENT, INGREDIENT_FIELD_CHANGE, OPEN_CHOOSE_INGREDIENT_MODAL, CLOSE_CHOOSE_INGREDIENT_MODAL, REPLACE_INGREDIENT, SET_ERROR, INGREDIENT_FILE_UPLOAD, DELETE_INGREDIENT, SET_INTERVAL_ID, DELETE_PRODUCT, ANSWER_TEXT_CHANGE, ANSWER_FILE_UPLOAD, SET_FORM_ID, SET_FORM_DATA, CLEAR_INTERVAL_ID } from "../Constants"
+import shortid from "shortid"
 const initialState = {
     products: [],
+    questions: [
+        {
+        name: "question1",
+        answer:""
+        },
+        {
+            name: "question2",
+            answer:""
+        },
+        {
+            name: "question3",
+            answer:""
+        },
+        {
+            name: "question4",
+            answer:""
+        },
+        {
+            name: "question5",
+            answer:""
+        },
+        {
+            name: "question6",
+            answer:""
+        },
+        {
+            name: "question7",
+            answer:""
+        },
+        {
+            name: "question7",
+            answer:""
+        }
+    ],
+    intervalId:null,
     productIndexForChooseIngredientModal: -1,
     chooseIngredientModalVisibility: false,
     errors:null
@@ -15,20 +51,36 @@ const addProductReducer = (state = initialState, action) => {
                 products:[...state.products,action.payload]
             }
         }
+        
+        else if (action.type === DELETE_PRODUCT) {
+            let products = state.products.slice()
+            if (products[action.payload.index].id === action.payload.id) {
+                products.splice(action.payload.index,1)
+            } else {
+                let index = products.findIndex(product => {
+                    return product._id === action.payload.id
+                })
+                products.splice(index,1)
+            }
+            return {
+                ...state,
+                products:[...products]
+            }
+        }
             
         else if (action.type===PRODUCT_TITLE_CHANGE)
         {
             let products = state.products.slice()
-            var productIndex = products.findIndex((product) => {
-                return product.productName === action.payload.name
-            })
-            products[productIndex].productValue = action.payload.value
+            // var productIndex = products.findIndex((product) => {
+            //     return product.productName === action.payload.name
+            // })
+            products[action.payload.index].name = action.payload.target.value
             return {
                 ...state,
                 products: [...products],
                 errors: {
                     ...state.errors,
-                    [products[productIndex].productName]:null
+                    [products[action.payload.index]._id+"-name"]:null
                 }
             }
         }
@@ -36,17 +88,35 @@ const addProductReducer = (state = initialState, action) => {
         else if (action.type===ADD_INGREDIENT)
         {
             let products = state.products.slice()
-            products[action.payload.productIndex].productIngredients.push(action.payload.newIngredient)
+            products[action.payload.productIndex].ingredients.push(action.payload.newIngredient)
             return {
                 ...state,
                 products: [...products],
                 chooseIngredientModalVisibility: false,
             }
         }
+        else if (action.type === DELETE_INGREDIENT) {
+            
+            let products = state.products.slice()
+            let id = products[action.payload.productIndex].ingredients[action.payload.index]._id
+            if (id === action.payload.id)
+                products[action.payload.productIndex].ingredients.splice(action.payload.index,1)
+            else {
+                let index = products[action.payload.productIndex].ingredients.findIndex(ingredient => {
+                    return ingredient._id === action.payload.id
+                })
+                products[action.payload.productIndex].ingredients.splice(index,1)
+            }
+            return {
+                ...state,
+                products:[...products]
+            }
+        }
         else if (action.type===REPLACE_INGREDIENT)
         {
             let products = state.products.slice()
-            products[action.payload.productIndex].productIngredients[action.payload.ingredientIndex]=action.payload.newIngredient
+            products[action.payload.productIndex].ingredients[action.payload.ingredientIndex].id = shortid.generate()
+            products[action.payload.productIndex].ingredients[action.payload.ingredientIndex]=action.payload.newIngredient
             return {
                 ...state,
                 products: [...products],
@@ -57,30 +127,30 @@ const addProductReducer = (state = initialState, action) => {
         else if (action.type===INGREDIENT_FIELD_CHANGE)
         {   
             let products = state.products.slice();
-            let targetName = action.payload.target.name
-            let fieldName = action.payload.target.getAttribute("propertyname");
-            products[action.payload.productIndex].productIngredients[action.payload.ingredientIndex][fieldName] = action.payload.target.value
+            // let targetName = action.payload.target.name
+            // let fieldName = action.payload.target.getAttribute("propertyname");
+            let ingredient =products[action.payload.productIndex].ingredients[action.payload.ingredientIndex]
+            ingredient[action.payload.target.name] = action.payload.target.value
             return {
                 ...state,
                 products: [...products],
                 errors: {
                     ...state.errors,
-                    [targetName]:null
+                    [ingredient._id+"-"+action.payload.target.name]:null
                 }
             }
         }
         else if (action.type===INGREDIENT_FILE_UPLOAD)
         {    
             let products = state.products.slice();
-            let targetName = action.payload.target.name
-            let fieldName = action.payload.target.getAttribute("propertyname");
-            products[action.payload.productIndex].productIngredients[action.payload.ingredientIndex][fieldName] = action.payload.file
+            let ingredient = products[action.payload.productIndex].ingredients[action.payload.ingredientIndex]
+            ingredient.specSheet = action.payload.file
             return {
                 ...state,
                 products: [...products],
                 errors: {
                     ...state.errors,
-                    [targetName]:null
+                    [ingredient._id+"-specSheet"]:null
                 }
             }
         }
@@ -108,6 +178,47 @@ const addProductReducer = (state = initialState, action) => {
                     ...state.errors,
                     [action.payload.key]:action.payload.value
                 }
+            }
+        }
+        else if (action.type === SET_INTERVAL_ID) {
+            return {
+                ...state,
+                intervalId:action.payload
+            }
+        }
+        else if (action.type === CLEAR_INTERVAL_ID) {
+            return {
+                ...state,
+                intervalId:null,
+            }
+        }
+        else if (action.type === ANSWER_TEXT_CHANGE) {
+            let questions = state.questions
+            questions[action.payload.index].answer = action.payload.target.value 
+            return {
+                ...state,
+                questions:[...questions]
+            }
+        }
+        
+        else if (action.type === ANSWER_FILE_UPLOAD) {
+            let questions = state.questions
+            questions[action.payload.index].answer = action.payload.file 
+            return {
+                ...state,
+                questions:[...questions]
+            }
+        }
+        else if (action.type === SET_FORM_ID) {
+            return {
+                ...state,
+                _id:shortid.generate()
+            }
+        }
+        else if (action.type === SET_FORM_DATA) {
+            return {
+                ...state,
+                ...action.payload
             }
         }
         

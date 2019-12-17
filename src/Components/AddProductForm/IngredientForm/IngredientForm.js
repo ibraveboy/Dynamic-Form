@@ -3,26 +3,27 @@ import React, { Component } from "react";
 import {
     ingredientFieldChangeHandler,
     setError,
-    ingredientFileUpload
+    ingredientFileUpload,
+    deleteIngredientHandler,
 } from "../../../Redux/Actions";
 import { connect } from "react-redux";
 import FileIcon from "./file.png";
 import TrashIcon from "./trash.png"
+import shortid from "shortid";
 
 class IngredientForm extends Component {
     state = {
         error: null
     };
+
     onFileInputChangeHandler = e => {
         if (e.target.files[0]) {
             let file = e.target.files[0];
-            console.log(file);
-
             if (file.size / 1000000 > 2) {
                 e.target.value = null;
                 this.props.setError(
-                    e.target.name,
-                    "File must be less than 20mb"
+                    (this.props.id+"-"+e.target.name),
+                    "File must be less than 2MB"
                 );
                 return false;
             }
@@ -35,23 +36,33 @@ class IngredientForm extends Component {
         }
     };
 
+    deleteIngredient = () => {
+
+        if (window.confirm("This action cannot be undone. Do you really want to delete?")) {
+            if (this.props.products[this.props.productIndex].ingredients.length === 1) { 
+                alert("This product has only one attribute.")
+                return false
+            }
+            this.props.deleteIngredientHandler(this.props.productIndex,this.props.ingredientIndex,this.props.id)
+        } 
+
+    }
+
     render() {
+        const fileInputId = shortid.generate()
         const {
-            name,
             errors,
             value,
-            suppliername,
             suppliervalue,
-            filename,
             filevalue
         } = this.props;
-        console.log(filevalue);
         return (
             <div className="row ingredient">
                 <div className="col-12 close-btn-wrapper">
                     <span
                         className="close-btn bg-danger"
                         title="Remove ingredient"
+                        onClick={this.deleteIngredient}
                     >
                         x
                     </span>
@@ -60,11 +71,11 @@ class IngredientForm extends Component {
                     <div className="form-group">
                         <input
                             type="text"
-                            name={name}
+                            name="name"
                             className={
                                 "form-control " +
                                 (errors
-                                    ? errors[name]
+                                    ? errors[this.props.id+"-name"]
                                         ? "is-invalid"
                                         : ""
                                     : "")
@@ -86,7 +97,7 @@ class IngredientForm extends Component {
                     <div className="form-group">
                         <input
                             type="text"
-                            name={suppliername}
+                            name="supplierName"
                             className="form-control"
                             value={suppliervalue}
                             placeholder="Supplier Name"
@@ -111,22 +122,21 @@ class IngredientForm extends Component {
                                         className={
                                             "custom-file-input form-control " +
                                             (errors
-                                                ? errors[filename]
+                                                ? errors[this.props.id+"-specSheet"]
                                                     ? "is-invalid"
                                                     : ""
                                                 : "")
                                         }
-                                        aria-describedby="inputGroupFileAddon01"
+                                        id={fileInputId}
                                         title="Upload Supplier Spec Sheet/Statement"
-                                        id={filename}
-                                        name={filename}
+                                        name="specSheet"
                                         propertyname={"ingredientFilevalue"}
                                         accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                         onChange={this.onFileInputChangeHandler}
                                     />
                                     <label
                                         className="custom-file-label"
-                                        htmlFor={filename}
+                                        htmlFor={fileInputId}
                                     >
                                         Upload Supplier Spec Sheet/Statement
                                     </label>
@@ -135,10 +145,10 @@ class IngredientForm extends Component {
                                     <b>Note:</b> File must be less than 2MB.
                                 </small>
                                 {errors ? (
-                                    errors[filename] ? (
+                                    errors[this.props.id+"-specSheet"] ? (
                                         <div>
                                             <small className="text-danger">
-                                                {errors[filename]}
+                                                {errors[this.props.id+"-specSheet"]}
                                             </small>
                                         </div>
                                     ) : null
@@ -178,13 +188,12 @@ class IngredientForm extends Component {
 }
 
 const mapStateToProps = state => {
-    return {
-        errors: state.addProductReducer.errors
-    };
+    return state.addProductReducer
 };
 
 export default connect(mapStateToProps, {
     ingredientFieldChangeHandler,
     setError,
-    ingredientFileUpload
+    ingredientFileUpload,
+    deleteIngredientHandler,
 })(IngredientForm);

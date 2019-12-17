@@ -1,41 +1,49 @@
-export const createIngredientFieldsObject = (name,length) => {
+import shortid from "shortid";
+
+export const createIngredientFieldsObject = () => {
     return {
-        ingredientName: name + ("ingredient" + (length+1)),
-        ingredientValue: "",
-        ingredientFilename: name + ("ingredientfile" + (length+1)),
-        ingredientFilevalue: "",
-        ingredientSupplierName: name + ("ingredientsupplier" + (length + 1)),
-        ingredientSupplierValue:""
-    }
-}
-export const isIngredientsEmpty = (ingredients) => {
-    let empty = { isempty: false, errors: {}}
-    for (let i = 0; i < ingredients.length;i++) {
-        // || ingredient.ingredientFilevalue === "" || ingredient.ingredientSupplierValue === ""
+        _id: shortid.generate(),
+        name: "",
+        specSheet: "",
+        supplierName: ""
+    };
+};
+export const isIngredientsEmpty = ingredients => {
+    let empty = { isempty: false, errors: {} };
+    for (let i = 0; i < ingredients.length; i++) {
+        // || ingredient.specSheet === "" || ingredient.supplierName === ""
 
         //If unfilled field found then alert
-        if (ingredients[i].ingredientValue === "") {
-            
-            empty["isempty"] = true
-            empty.errors["key"] = ingredients[i].ingredientName
-            empty.errors["value"] = "This field is required."
+        if (ingredients[i].name === "") {
+            empty["isempty"] = true;
+            empty.errors["key"] = ingredients[i]._id + "-name";
+            empty.errors["value"] = "This field is required.";
             break;
         }
     }
-    return empty
-}
-export const isProductEmpty = (product) => {
-    console.log(product)
-    let empty = { isempty: false, errors: {}}
-    if (product.productValue === "") {
-        empty.isempty= true
-        empty.errors.key = product.productName
-        empty.errors["value"]="This field is required."
-        
+    return empty;
+};
+export const isProductEmpty = product => {
+    let empty = { isempty: false, errors: {} };
+    if (product.name === "") {
+        empty.isempty = true;
+        empty.errors.key = product._id + "-name";
+        empty.errors["value"] = "This field is required.";
     } else {
-        empty = isIngredientsEmpty(product.productIngredients)
-        
+        empty = isIngredientsEmpty(product.ingredients);
     }
-    return empty
-    
-}
+    return empty;
+};
+
+export const getQuestions = () => {
+    return {
+            "question1":"If the production process or manufacturing process uses any shared facility, please disclose the cleaning mechanisms in place and precautionary measures implemented to prevent any chance of cross-contamination that could result in trace amount of animal products being found in the final product.",
+             "question2":"If applicable, please specify the kind of fertilizer you use? Fertilizer will not preclude you from vegan certification, but please disclose, if known, and if applicable.",
+            "question3":"How do you fine, clarify, filter, and/or process your products, as applicable?",
+            "question4":"If applicable, please describe any techniques you use to de-acidify your products? De-acidification refers to any processes used to achieve an acid reduction in the product prior to bottling.",
+            "question5":"If you are certified organic, kosher, or have passed any other formal certification, please upload that paperwork, which will greatly assist our research process, and write here which mark you will be uploading.",
+            "question6":"Do you use any known animals in your packaging (i.e. beeswax, dairy, animal-product based glue or ink in the final packaging). At this time, vegan packaging is not required to pass vegan product certification.",
+            "question7":"Do you have an official storefront or tasting room the public visits?",
+            "question8":"Please send us a picture of an ID for our records."
+        }
+};
