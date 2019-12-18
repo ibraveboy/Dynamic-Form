@@ -5,12 +5,14 @@ import "./Success.scss"
 import { toggleSuccessModal } from '../../../../Redux/Actions';
 
 function Success(props) {
-    console.log(props);
     
     return (
         <div className={"success-modal "+(props.successModalVisibility?"":"hide")} >
             <div className="dark-overlay"></div>
-            <div className="modal-wrapper">
+            <div className="modal-wrapper text-center">
+                <div className="display-3">
+                    Done
+                </div>
                 <div className="modal-text h4">
                     {props.successModalText}
                 </div>

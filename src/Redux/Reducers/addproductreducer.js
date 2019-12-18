@@ -1,4 +1,4 @@
-import { ADD_PRODUCT,PRODUCT_TITLE_CHANGE, ADD_INGREDIENT, INGREDIENT_FIELD_CHANGE, OPEN_CHOOSE_INGREDIENT_MODAL, CLOSE_CHOOSE_INGREDIENT_MODAL, REPLACE_INGREDIENT, SET_ERROR, INGREDIENT_FILE_UPLOAD, DELETE_INGREDIENT, SET_INTERVAL_ID, DELETE_PRODUCT, ANSWER_TEXT_CHANGE, ANSWER_FILE_UPLOAD, SET_FORM_ID, SET_FORM_DATA, CLEAR_INTERVAL_ID, INGREDIENT_FILE_DELETE, ANSWER_FILE_DELETE, TOGGLE_SUCCESS_MODAL, SAVE_FORM_DATA } from "../Constants"
+import { ADD_PRODUCT,PRODUCT_TITLE_CHANGE, ADD_INGREDIENT, INGREDIENT_FIELD_CHANGE, OPEN_CHOOSE_INGREDIENT_MODAL, CLOSE_CHOOSE_INGREDIENT_MODAL, REPLACE_INGREDIENT, SET_ERROR, INGREDIENT_FILE_UPLOAD, DELETE_INGREDIENT, SET_INTERVAL_ID, DELETE_PRODUCT, ANSWER_TEXT_CHANGE, ANSWER_FILE_UPLOAD, SET_FORM_ID, SET_FORM_DATA, CLEAR_INTERVAL_ID, INGREDIENT_FILE_DELETE, ANSWER_FILE_DELETE, TOGGLE_SUCCESS_MODAL, SAVE_FORM_DATA, TOGGLE_LOADER } from "../Constants"
 import shortid from "shortid"
 const initialState = {
     products: [],
@@ -40,7 +40,8 @@ const initialState = {
     productIndexForChooseIngredientModal: -1,
     chooseIngredientModalVisibility: false,
     successModalVisibility: false,
-    successModalText:"",
+    successModalText: "",
+    loaderVisible:false,
     errors:null
 }
 
@@ -249,7 +250,8 @@ const addProductReducer = (state = initialState, action) => {
                 ...state,
                 ...action.payload,
                 successModalVisibility: true,
-                successModalText:"Form data has been submitted."
+                successModalText: "Form data has been submitted.",
+                loaderVisible:false
             }
         }
         else if (action.type === TOGGLE_SUCCESS_MODAL) {
@@ -258,7 +260,13 @@ const addProductReducer = (state = initialState, action) => {
                 successModalVisibility: !state.successModalVisibility,
                 successModalText:action.payload
             }
+    }
+    else if (action.type === TOGGLE_LOADER) {
+        return {
+            ...state,
+            loaderVisible: !state.loaderVisible
         }
+    }
         return state    
 }
 

@@ -11,14 +11,15 @@ import {
     setFormData,
     setFormId,
     clearIntervalId,
-    saveFormData
+    saveFormData,
+    toggleSuccessModal,
+    toggleLoader
 } from "../../Redux/Actions";
 import { isProductEmpty, btnShouldEnabled } from "../../Helpers/helperMethods";
 import ChooseIngredient from "../../Components/AddProductForm/Modals/ChooseIngredient/ChooseIngredient";
 import QuestionsList from "../../Components/AddProductForm/QuestionsForm/QuestionsList/QuestionsList";
 import { withRouter } from "react-router-dom";
 import Spinner from "../../Components/Spinner/Spinner";
-import Success from "../../Components/AddProductForm/Modals/Success/Success";
 
 class AddProductForm extends Component {
     state = {
@@ -28,6 +29,13 @@ class AddProductForm extends Component {
         if (this.props.intervalId)
             this.props.clearIntervalId(this.props.intervalId);
     }
+    componentDidUpdate() {
+        if (this.props.successModalVisibility)
+        {
+            this.props.toggleSuccessModal("")
+            this.props.history.push("/thankyou")
+        }
+    }
     componentDidMount() {
         if (this.props.match.params.id && !this.props._id) {
             this.props.setFormData(
@@ -35,9 +43,7 @@ class AddProductForm extends Component {
                 this.props.history
             );
         } else {
-            // if (!this.props._id) {
-            //     this.props.setFormId();
-            // }
+            
             if (this.props.products.length === 0) {
                 let ingredients = [
                     {
@@ -92,6 +98,7 @@ class AddProductForm extends Component {
     };
 
     submitButtonHandler = () => {
+        this.props.toggleLoader()
         let productForm = {
             _id: this.props._id,
             products: this.props.products,
@@ -99,7 +106,11 @@ class AddProductForm extends Component {
         };
         this.props.saveFormData(productForm);
     };
+
+
     render() {
+        console.log(this.props.loaderVisible);
+        
         let enable = btnShouldEnabled(this.props);
         // Mapping Product Fields
         let allProductFields = this.props.products.map((product, index) => {
@@ -114,7 +125,7 @@ class AddProductForm extends Component {
             );
         });
 
-        if (this.props._id) {
+        if (this.props._id && !this.props.loaderVisible) {
             return (
                 <div className="add-product-form container-fluid">
                     <h1 className="display-4 mt-5 mb-5 text-center">
@@ -206,7 +217,6 @@ class AddProductForm extends Component {
                         </div>
                     </div>
                     <ChooseIngredient />
-                    <Success />
                 </div>
             );
         } else {
@@ -227,6 +237,8 @@ export default withRouter(
         setFormData,
         setFormId,
         clearIntervalId,
-        saveFormData
+        saveFormData,
+        toggleSuccessModal,
+        toggleLoader
     })(AddProductForm)
 );

@@ -19,5 +19,6 @@ export const SET_FORM_ID = "SET_FORM_ID"
 export const SET_FORM_DATA = "SET_FORM_DATA"
 export const SAVE_FORM_DATA = "SAVE_FORM_DATA"
 export const TOGGLE_SUCCESS_MODAL = "TOGGLE_SUCCESS_MODAL"
+export const TOGGLE_LOADER = "TOGGLE_LOADER"
 
 

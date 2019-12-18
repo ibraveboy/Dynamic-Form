@@ -1,0 +1,22 @@
+.thank-you-page{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    animation: modal-popup-content 0.5s 0.1s;
+    animation-fill-mode: forwards;
+    .thank-you{
+        .thank-you-title{
+            padding:0px 0px 20px;
+            font-weight: bolder;
+        }
+        .thank-you-message{
+            font-weight: bold;
+            padding-bottom:20px ;
+            span{
+                cursor: pointer;
+            }
+        }
+    }
+}
