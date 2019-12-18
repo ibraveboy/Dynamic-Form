@@ -8,7 +8,6 @@ function App() {
   return (
     <div className="App">
       <Route path="/" component={Home} exact />
-      <Route path="/productsform" component={AddProductForm} exact/>
       <Route path="/productsform/:id" component={AddProductForm}/>
     </div>
   );

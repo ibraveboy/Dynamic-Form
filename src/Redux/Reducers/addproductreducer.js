@@ -1,4 +1,4 @@
-import { ADD_PRODUCT,PRODUCT_TITLE_CHANGE, ADD_INGREDIENT, INGREDIENT_FIELD_CHANGE, OPEN_CHOOSE_INGREDIENT_MODAL, CLOSE_CHOOSE_INGREDIENT_MODAL, REPLACE_INGREDIENT, SET_ERROR, INGREDIENT_FILE_UPLOAD, DELETE_INGREDIENT, SET_INTERVAL_ID, DELETE_PRODUCT, ANSWER_TEXT_CHANGE, ANSWER_FILE_UPLOAD, SET_FORM_ID, SET_FORM_DATA, CLEAR_INTERVAL_ID } from "../Constants"
+import { ADD_PRODUCT,PRODUCT_TITLE_CHANGE, ADD_INGREDIENT, INGREDIENT_FIELD_CHANGE, OPEN_CHOOSE_INGREDIENT_MODAL, CLOSE_CHOOSE_INGREDIENT_MODAL, REPLACE_INGREDIENT, SET_ERROR, INGREDIENT_FILE_UPLOAD, DELETE_INGREDIENT, SET_INTERVAL_ID, DELETE_PRODUCT, ANSWER_TEXT_CHANGE, ANSWER_FILE_UPLOAD, SET_FORM_ID, SET_FORM_DATA, CLEAR_INTERVAL_ID, INGREDIENT_FILE_DELETE, ANSWER_FILE_DELETE, TOGGLE_SUCCESS_MODAL, SAVE_FORM_DATA } from "../Constants"
 import shortid from "shortid"
 const initialState = {
     products: [],
@@ -32,13 +32,15 @@ const initialState = {
             answer:""
         },
         {
-            name: "question7",
+            name: "question8",
             answer:""
         }
     ],
     intervalId:null,
     productIndexForChooseIngredientModal: -1,
     chooseIngredientModalVisibility: false,
+    successModalVisibility: false,
+    successModalText:"",
     errors:null
 }
 
@@ -154,6 +156,19 @@ const addProductReducer = (state = initialState, action) => {
                 }
             }
         }
+        else if (action.type === INGREDIENT_FILE_DELETE) {
+            let products = state.products.slice();
+            let ingredient = products[action.payload.productIndex].ingredients[action.payload.ingredientIndex]
+            ingredient.specSheet = null
+            return {
+                ...state,
+                products: [...products],
+                errors: {
+                    ...state.errors,
+                    [ingredient._id+"-specSheet"]:null
+                }
+            }
+        }
         else if (action.type===OPEN_CHOOSE_INGREDIENT_MODAL)
         {    
             return {
@@ -209,6 +224,14 @@ const addProductReducer = (state = initialState, action) => {
                 questions:[...questions]
             }
         }
+        else if (action.type === ANSWER_FILE_DELETE) {
+            let questions = state.questions
+            questions[action.payload.index].answer = ""
+            return {
+                ...state,
+                questions:[...questions]
+            }
+        }
         else if (action.type === SET_FORM_ID) {
             return {
                 ...state,
@@ -218,10 +241,24 @@ const addProductReducer = (state = initialState, action) => {
         else if (action.type === SET_FORM_DATA) {
             return {
                 ...state,
-                ...action.payload
+                ...action.payload,
             }
         }
-        
+        else if (action.type === SAVE_FORM_DATA) {
+            return {
+                ...state,
+                ...action.payload,
+                successModalVisibility: true,
+                successModalText:"Form data has been submitted."
+            }
+        }
+        else if (action.type === TOGGLE_SUCCESS_MODAL) {
+            return {
+                ...state,
+                successModalVisibility: !state.successModalVisibility,
+                successModalText:action.payload
+            }
+        }
         return state    
 }
 

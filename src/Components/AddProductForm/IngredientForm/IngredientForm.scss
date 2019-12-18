@@ -1,12 +1,18 @@
 .ingredient{
     position: relative;
+    .ingredient-title{
+        margin:20px 0px
+    }
+    .ingredient-input{
+        padding: 0px 20px;
+    }
     .close-btn-wrapper{
         position: absolute;
         display: flex;
         opacity: 0;
         justify-content: flex-end;
         align-items: center;
-        top: 0;
+        top: 40px;
         width: 100%;
         z-index: 2;
         transition: 0.2s;
@@ -70,6 +76,17 @@
                 top:0;
                 bottom: 0;
             }
+        }
+    }
+}
+
+@media screen and (max-width:768px){
+    .ingredient{
+        .close-btn-wrapper{
+            opacity: 1;
+        }
+        .ingredient-input{
+            padding: 0px 0px;
         }
     }
 }

@@ -81,17 +81,7 @@ class ProductForm extends Component {
         });
         return (
             <div className="product-form">
-                <p className="text-justify">
-                    For each product, list <b> ALL </b> ingredients and supplier
-                    names (including source ingredients, manufactured
-                    ingredients, and GMO ingredients that may involve
-                    animal substances). Please also include ALL
-                    <b> insignificant</b> ingredients ( <span className="text-danger"> including those weighing
-                    less than 0.5 grams per serving </span> ) and <b>incidental </b> 
-                    ingredients ( <span className="text-danger"> ingredients that could have
-                    incidentally ended up in the final product during
-                    the manufacturing or production process. </span> )
-                </p>
+                
                 <fieldset>
                     <legend>
                         {this.props.value || "Product Title"}
@@ -105,7 +95,7 @@ class ProductForm extends Component {
                             </span>
                         </div>
                     </legend>
-                    <div className="form-group mt-0">
+                    <div className="form-group mt-0 product-title-input">
                         
                         <input
                             type="text"

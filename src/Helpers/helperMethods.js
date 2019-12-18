@@ -47,3 +47,35 @@ export const getQuestions = () => {
             "question8":"Please send us a picture of an ID for our records."
         }
 };
+
+export const isQuestionEmpty = (question) => {
+    let empty = { isempty: false, errors: {} };
+    if (!question.answer)
+        empty.isempty = true
+    return empty
+}
+
+
+export const btnShouldEnabled = (props) => {
+    let emp = {
+        isempty: true,
+        errors:[]
+    }
+    for (let i = 0; i < props.products.length; i++){
+        emp = isProductEmpty(props.products[i])
+        if (emp.isempty)
+            break;
+    }
+    if(!emp.isempty)
+        for (let i = 0; i < props.questions.length; i++){
+            emp = isQuestionEmpty(props.questions[i])
+            if (emp.isempty)
+                break
+        }
+
+    return !emp.isempty
+}
+
+export const mapStateToProps = state => {
+    return state.addProductReducer;
+};

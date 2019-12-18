@@ -5,6 +5,7 @@ import {
     setError,
     ingredientFileUpload,
     deleteIngredientHandler,
+    ingredientFileDelete
 } from "../../../Redux/Actions";
 import { connect } from "react-redux";
 import FileIcon from "./file.png";
@@ -35,6 +36,12 @@ class IngredientForm extends Component {
             );
         }
     };
+
+    fileDelete = (file) => {
+        if (window.confirm("This action cannot be undone. Are you sure?")) {
+            this.props.ingredientFileDelete(file,this.props.productIndex,this.props.ingredientIndex)
+        }
+    }
 
     deleteIngredient = () => {
 
@@ -67,8 +74,16 @@ class IngredientForm extends Component {
                         x
                     </span>
                 </div>
+                <div className="col-12 ingredient-title">
+                    <div className="h6">
+                        {this.props.ingredientIndex+1}. {value||"Ingredient Name"}
+                    </div>
+                </div>
                 <div className="col-lg-6">
-                    <div className="form-group">
+                    <div className="form-group ingredient-input">
+                        <label>
+                            Ingredient Name:
+                        </label>
                         <input
                             type="text"
                             name="name"
@@ -94,7 +109,10 @@ class IngredientForm extends Component {
                     </div>
                 </div>
                 <div className="col-lg-6">
-                    <div className="form-group">
+                    <div className="form-group ingredient-input">
+                        <label>
+                            Supplier Name:
+                        </label>
                         <input
                             type="text"
                             name="supplierName"
@@ -113,7 +131,10 @@ class IngredientForm extends Component {
                     </div>
                 </div>
                 <div className="col-lg-12">
-                    <div className="form-group">
+                    <div className="form-group ingredient-input">
+                        <label>
+                            Supplier Spec Sheet/Statement
+                        </label>
                         {!filevalue ? (
                             <React.Fragment>
                                 <div className="custom-file">
@@ -131,7 +152,7 @@ class IngredientForm extends Component {
                                         title="Upload Supplier Spec Sheet/Statement"
                                         name="specSheet"
                                         propertyname={"ingredientFilevalue"}
-                                        accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                        accept=".doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.png,.jpg,.jpeg,.pdf"
                                         onChange={this.onFileInputChangeHandler}
                                     />
                                     <label
@@ -157,7 +178,10 @@ class IngredientForm extends Component {
                         ) : (
                             <div className="d-flex">
                                 <div className="file-selected col-12 px-4 py-3 d-flex flex-row">
-                                        <div className="del-icon">
+                                        <div
+                                            className="del-icon"
+                                            onClick={()=>this.fileDelete(filevalue)}
+                                        >
                                             <div className="overlay"></div>
                                             <div className="icon-wrapper">
                                                 <img src={TrashIcon} alt="trash icon"/>
@@ -196,4 +220,5 @@ export default connect(mapStateToProps, {
     setError,
     ingredientFileUpload,
     deleteIngredientHandler,
+    ingredientFileDelete
 })(IngredientForm);

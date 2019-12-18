@@ -1,4 +1,5 @@
-import { PRODUCT_TITLE_CHANGE, ADD_PRODUCT, ADD_INGREDIENT, INGREDIENT_FIELD_CHANGE, OPEN_CHOOSE_INGREDIENT_MODAL, CLOSE_CHOOSE_INGREDIENT_MODAL, REPLACE_INGREDIENT, SET_ERROR, INGREDIENT_FILE_UPLOAD, DELETE_PRODUCT, DELETE_INGREDIENT, SET_INTERVAL_ID, ANSWER_TEXT_CHANGE, ANSWER_FILE_UPLOAD, SET_FORM_ID, SET_FORM_DATA, CLEAR_INTERVAL_ID } from "../Constants"
+import { PRODUCT_TITLE_CHANGE, ADD_PRODUCT, ADD_INGREDIENT, INGREDIENT_FIELD_CHANGE, OPEN_CHOOSE_INGREDIENT_MODAL, CLOSE_CHOOSE_INGREDIENT_MODAL, REPLACE_INGREDIENT, SET_ERROR, INGREDIENT_FILE_UPLOAD, DELETE_PRODUCT, DELETE_INGREDIENT, SET_INTERVAL_ID, ANSWER_TEXT_CHANGE, ANSWER_FILE_UPLOAD, SET_FORM_ID, SET_FORM_DATA, CLEAR_INTERVAL_ID, INGREDIENT_FILE_DELETE, ANSWER_FILE_DELETE, TOGGLE_SUCCESS_MODAL, SAVE_FORM_DATA } from "../Constants"
+import axios from "axios"
 
 export const productTitleChangeHandler = (e,index) => {
     return {
@@ -68,7 +69,19 @@ export const ingredientFileUpload = (file,e,productIndex,ingredientIndex) => {
             }
         })
     }
-} 
+}
+
+export const ingredientFileDelete = (file,productIndex,ingredientIndex) => {
+    return (dispatch) => {
+        return dispatch({
+            type: INGREDIENT_FILE_DELETE,
+            payload: {
+                productIndex,
+                ingredientIndex
+            }
+        })
+    }
+}
 
 export const openChooseIngredientModal = (productIndex) => {
     return {
@@ -114,7 +127,26 @@ export const answerTextChangeHandler = (e,index) => {
 export const answerFileChangeHandler = (e,file,index) => {
     return {
         type: ANSWER_FILE_UPLOAD,
-        payload:{target:e.target,file,index}
+        payload: {
+            target: e.target,
+            file:{
+                name: file.name,
+                size: ((file.size / 1000000) < 1?((file.size/1000)+"KB"):((file.size / 1000000)+"MB")),
+                url: "",
+            },
+            index
+        }
+    }
+}
+
+export const answerFileDeleteHandler = (file,index) => {
+    return (dispatch) => {
+        return dispatch({
+            type: ANSWER_FILE_DELETE,
+            payload: {
+                index
+            }
+        })
     }
 }
 
@@ -126,21 +158,37 @@ export const setFormId = () => {
 
 export const setFormData = (id,history) => {
     return (dispatch) => {
-        let productForms = localStorage.getItem("productForms")
-        if (productForms) {
-            productForms = JSON.parse(productForms)
-            let productForm = productForms.find(pf => {
-                return pf._id === id
-            })
-            if (productForm) {
+        axios.post("http://demo1011396.mockable.io/productForms", { id })
+            .then(res => {
+                console.log(res.data);
+                
+                if (res.data.isEmpty)
+                    history.push("/404")
                 return dispatch({
                     type: SET_FORM_DATA,
-                    payload:productForm
+                    payload:res.data
                 })
-            } else
-                history.push("/productform")
-        } else {
-            history.push("/productform")
-        }
+            })
+            .catch(err => {
+            })
+    }
+}
+
+export const saveFormData = (data) => {
+    return (dispatch) => {
+        axios.post("https://webhook.site/a3b5809c-00f7-4dcb-94ab-c8daef2b8050",data)
+            .then(res => {
+                return dispatch({
+                    type: SAVE_FORM_DATA,
+                    payload:res.data
+                })
+            })
+    }
+}
+
+export const toggleSuccessModal = (text) => {
+    return {
+        type: TOGGLE_SUCCESS_MODAL,
+        payload:text
     }
 }

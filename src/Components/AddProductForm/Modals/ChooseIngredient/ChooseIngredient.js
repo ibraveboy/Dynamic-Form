@@ -2,6 +2,7 @@ import "./ChooseIngredient.scss"
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { closeChooseIngredientModal,addIngredientHandler,replaceIngredientHandler } from "../../../../Redux/Actions"
+import shortid from "shortid"
 
 class ChooseIngredient extends Component {
 
@@ -22,13 +23,19 @@ class ChooseIngredient extends Component {
         // The Ingredient Object that is selected by the user
 
         let ingredient = this.props.products[this.state.selectedIngredientProductIndex].ingredients[this.state.selectedIngredientIndex]
-
+        ingredient={...ingredient,_id:shortid.generate()}
         // All the ingredients of the current product 
 
         let ingredientsTemp = this.props.products[this.props.productIndexForChooseIngredientModal].ingredients
 
+        //If there is not ingredient
+
+        if (ingredientsTemp.length === 0) {
+            this.props.addIngredientHandler(ingredient,this.props.productIndexForChooseIngredientModal)
+        }
         // If there is only one ingredient
-        if (ingredientsTemp.length === 1) {
+
+        else if (ingredientsTemp.length === 1) {
 
             let ingredientTemp = ingredientsTemp[0]
             
