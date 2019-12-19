@@ -109,7 +109,6 @@ class AddProductForm extends Component {
 
 
     render() {
-        console.log(this.props.loaderVisible);
         
         let enable = btnShouldEnabled(this.props);
         // Mapping Product Fields

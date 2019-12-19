@@ -48,20 +48,15 @@
         position: relative;
         padding: 10px 0px;
         box-sizing: content-box;
-        &:hover{
-            outline-width: 3px;
-            outline-color: lightgrey;
-            outline-style: dashed;
-            // border:2px dashed lightgrey;
-            .add-ingredient-btn-wrapper{
-                display: flex;
-            }
-        }
+        outline-width: 3px;
+        outline-color: lightgrey;
+        outline-style: dashed;
+        
         .add-ingredient-btn-wrapper{
             position: absolute;
             bottom:-10px;
             width: 100%;
-            display: none;
+            display: flex;
             justify-content: center;
             .add-ingredient-btn{
                 display: flex;

@@ -151,6 +151,7 @@ const addProductReducer = (state = initialState, action) => {
             return {
                 ...state,
                 products: [...products],
+                loaderVisible:false,
                 errors: {
                     ...state.errors,
                     [ingredient._id+"-specSheet"]:null
@@ -164,6 +165,7 @@ const addProductReducer = (state = initialState, action) => {
             return {
                 ...state,
                 products: [...products],
+                loaderVisible:false,
                 errors: {
                     ...state.errors,
                     [ingredient._id+"-specSheet"]:null
@@ -222,7 +224,8 @@ const addProductReducer = (state = initialState, action) => {
             questions[action.payload.index].answer = action.payload.file 
             return {
                 ...state,
-                questions:[...questions]
+                questions: [...questions],
+                loaderVisible:false,
             }
         }
         else if (action.type === ANSWER_FILE_DELETE) {
@@ -230,7 +233,8 @@ const addProductReducer = (state = initialState, action) => {
             questions[action.payload.index].answer = ""
             return {
                 ...state,
-                questions:[...questions]
+                questions: [...questions],
+                loaderVisible:false,
             }
         }
         else if (action.type === SET_FORM_ID) {

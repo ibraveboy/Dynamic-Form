@@ -44,6 +44,7 @@ export const replaceIngredientHandler = (newIngredient,productIndex,ingredientIn
 }
 
 export const ingredientFieldChangeHandler = (e, productIndex, ingredientIndex) => {
+
     return {
         type: INGREDIENT_FIELD_CHANGE,
         payload: {target:e.target,productIndex,ingredientIndex}
@@ -52,21 +53,26 @@ export const ingredientFieldChangeHandler = (e, productIndex, ingredientIndex) =
 
 export const ingredientFileUpload = (file,e,productIndex,ingredientIndex) => {
     return (dispatch) => {
-        
-        //Upload file to the server Api call and after Response call dispatch
-
-        return dispatch({
-            type: INGREDIENT_FILE_UPLOAD,
-            payload: {
-                file:{
-                    name: file.name,
-                    size: ((file.size / 1000000) < 1?((file.size/1000)+"KB"):((file.size / 1000000)+"MB")),
-                    url: "",
-                },
-                target: e.target,
-                productIndex,
-                ingredientIndex
-            }
+        axios.post("http://www.mocky.io/v2/5dfb82d32f000056c4ff9fe4")
+            .then(res => {
+                //Upload file to the server Api call and after Response call dispatch
+                let url = res.data.url
+                return dispatch({
+                    type: INGREDIENT_FILE_UPLOAD,
+                    payload: {
+                        file:{
+                            name: file.name,
+                            size: ((file.size / 1000000) < 1?((file.size/1000)+"KB"):((file.size / 1000000)+"MB")),
+                            url: url,
+                        },
+                        target: e.target,
+                        productIndex,
+                        ingredientIndex
+                    }
+                })
+            }).catch(err => {
+            //err message
+                alert("OOPS! Something went wrong.")
         })
     }
 }
@@ -124,18 +130,31 @@ export const answerTextChangeHandler = (e,index) => {
     }
 }
 
-export const answerFileChangeHandler = (e,file,index) => {
-    return {
-        type: ANSWER_FILE_UPLOAD,
-        payload: {
-            target: e.target,
-            file:{
-                name: file.name,
-                size: ((file.size / 1000000) < 1?((file.size/1000)+"KB"):((file.size / 1000000)+"MB")),
-                url: "",
-            },
-            index
-        }
+export const answerFileChangeHandler = (e, file, index) => {
+    
+    // API call for file upload
+    return (dispatch) => {
+        axios.post("http://www.mocky.io/v2/5dfb82d32f000056c4ff9fe4")
+            .then(res => {
+                console.log(res.data);
+                
+                let url = res.data
+                return dispatch(
+                    {
+                        type: ANSWER_FILE_UPLOAD,
+                        payload: {
+                            file:{
+                                name: file.name,
+                                size: ((file.size / 1000000) < 1?((file.size/1000)+"KB"):((file.size / 1000000)+"MB")),
+                                url: url.url,
+                            },
+                            index
+                        }
+                    }
+                )
+            }).catch(err => {
+            alert("OOPS! Something went wrong.")
+        })
     }
 }
 
