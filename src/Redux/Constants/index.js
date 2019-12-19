@@ -21,4 +21,8 @@ export const SAVE_FORM_DATA = "SAVE_FORM_DATA"
 export const TOGGLE_SUCCESS_MODAL = "TOGGLE_SUCCESS_MODAL"
 export const TOGGLE_LOADER = "TOGGLE_LOADER"
 
+//User constants
+export const SET_USER_DATA = "SET_USER_DATA"
+export const SET_USER_ERROR = "SET_USER_ERROR"
+export const TOGGLE_USER_LOADER = "TOGGLE_USER_LOADER"
 

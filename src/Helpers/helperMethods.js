@@ -1,4 +1,5 @@
 import shortid from "shortid";
+import axios from "axios";
 
 export const createIngredientFieldsObject = () => {
     return {
@@ -79,3 +80,14 @@ export const btnShouldEnabled = (props) => {
 export const mapStateToProps = state => {
     return state.addProductReducer;
 };
+
+export const setAuthHeaders = (token) => {
+    if (token) {
+        localStorage.setItem("authToken",token)
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
+    }
+    else {
+        localStorage.removeItem("authToken")
+        delete axios.defaults.headers.common["Authorization"] 
+    }
+}
