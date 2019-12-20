@@ -1,4 +1,4 @@
-import { SET_USER_DATA, SET_USER_ERROR, TOGGLE_USER_LOADER } from "../Constants/index"
+import { SET_USER_DATA, SET_USER_ERROR, TOGGLE_USER_LOADER, SET_NOTICE, TOGGLE_DRAWER } from "../Constants/index"
 
 const initialState = {
     _Id:"",
@@ -7,7 +7,9 @@ const initialState = {
     lastName: "",
     password: "",
     errors: {},
-    loader:false
+    loader: false,
+    notice: null,
+    open: false,
 }
 
 export const userReducer = (state=initialState,action)=>{
@@ -30,6 +32,19 @@ export const userReducer = (state=initialState,action)=>{
         return {
             ...state,
             loader: !state.loader,
+        }
+    }
+    else if (action.type === SET_NOTICE) {
+        return {
+            ...state,
+            notice: action.payload,
+            loader:false
+        }
+    }
+    else if (action.type === TOGGLE_DRAWER) {
+        return {
+            ...state,
+            open:action.payload
         }
     }
     return state

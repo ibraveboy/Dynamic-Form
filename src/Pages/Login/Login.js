@@ -10,11 +10,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { loginUser, setUserError,toggleUserLoader } from "../../Redux/Actions";
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
+import { loginUser, setUserError,toggleUserLoader,setNotice } from "../../Redux/Actions";
 import { FormControl } from "@material-ui/core";
 
 const styles = theme => ({
@@ -34,7 +30,7 @@ const styles = theme => ({
     },
     form: {
         width: "100%", // Fix IE 11 issue.
-        marginTop: theme.spacing(1)
+        marginTop: theme.spacing(8)
     },
     submit: {
         margin: theme.spacing(3, 0, 2)
@@ -49,6 +45,11 @@ class Login extends React.Component {
         showPassword: false,
     }
 
+    componentDidUpdate() {
+        if (this.props._id) {
+            this.props.history.push("/admin")
+        }
+    }
     onUserTextFieldChangeHandler = (e) => {
         this.props.setUserError({[e.target.name]:""})
         this.setState({
@@ -57,10 +58,17 @@ class Login extends React.Component {
     }
 
     onLoginClickHandler = () => {
+        this.props.setNotice(null)
         this.props.toggleUserLoader()
         if (this.state.email === "" || this.state.password === "") {
             this.props.setUserError({email:"This field is required.",password:"This field is required."})
             return false
+        } else {
+            let regExp = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/
+            if (!regExp.test(this.state.email)) {
+                this.props.setUserError({ email: "Enter valid email please." })
+                return false
+            }
         }
         let user = {
             email: this.props.email,
@@ -70,8 +78,12 @@ class Login extends React.Component {
     }
 
     onInputBlurHandler = (e) => {
+        let regExp = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(.\w{2,3})+$/
         if (e.target.value === "")
-            this.props.setUserError({ [e.target.name]: "This field is required." })
+        this.props.setUserError({ [e.target.name]: "This field is required." })
+        else if (e.target.name === "email" && !regExp.test(e.target.value)) {
+            this.props.setUserError({ [e.target.name]: "Enter valid email please." })
+        }
         else
             this.props.setUserError({[e.target.name]:""})
     }
@@ -97,10 +109,14 @@ class Login extends React.Component {
                     <Avatar className={classes.avatar}>
                         <LockOutlinedIcon />
                     </Avatar>
-                    <Typography component="h1" variant="h5">
-                        Sign in
+                    <Typography component="h1" variant="h3">
+                        Login
                     </Typography>
+                    
                     <form className={classes.form} noValidate>
+                        <Typography component="small" color="error">
+                            {this.props.notice}
+                        </Typography>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -133,20 +149,6 @@ class Login extends React.Component {
                                 error={this.props.errors["password"] ? true : false}
                                 onBlur={this.onInputBlurHandler}
                                 helperText={this.props.errors["password"] || ""}
-                                inputProps={
-                                    {
-                                        endAdornment:(<InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={this.handleClickShowPassword}
-                                                onMouseDown={this.handleMouseDownPassword}
-                                                edge="end"
-                                        >
-                                            {this.state.showPassword ? <Visibility /> : <VisibilityOff />}
-                                        </IconButton>
-                                        </InputAdornment>)
-                                    }
-                                }
                                
                             />
                         </FormControl>
@@ -180,4 +182,4 @@ class Login extends React.Component {
 const mapStateToProps = (state) => {
     return state.userReducer
 }
-export default connect(mapStateToProps, {loginUser,setUserError,toggleUserLoader})(withStyles(styles)(Login));
+export default connect(mapStateToProps, {loginUser,setUserError,toggleUserLoader,setNotice})(withStyles(styles)(Login));

@@ -25,4 +25,6 @@ export const TOGGLE_LOADER = "TOGGLE_LOADER"
 export const SET_USER_DATA = "SET_USER_DATA"
 export const SET_USER_ERROR = "SET_USER_ERROR"
 export const TOGGLE_USER_LOADER = "TOGGLE_USER_LOADER"
+export const SET_NOTICE = "SET_NOTICE"
+export const TOGGLE_DRAWER = "TOGGLE_DRAWER"
 
