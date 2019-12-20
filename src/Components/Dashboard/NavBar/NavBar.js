@@ -17,7 +17,6 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import { connect } from "react-redux";
 import { styles } from "./Styles";
 import { toggleDrawer } from "../../../Redux/Actions";
-import SideBar from "../SideBar/SideBar";
 
 class NavBar extends Component {
     state = {
@@ -112,7 +111,7 @@ class NavBar extends Component {
 
         return (
             <div className={classes.grow}>
-                <AppBar position="sticky">
+                <AppBar position="relative" className={classes.appBar}>
                     <Toolbar>
                         <IconButton
                             edge="start"
@@ -192,7 +191,6 @@ class NavBar extends Component {
                 </AppBar>
                 {renderMobileMenu}
                 {renderMenu}
-                <SideBar />
             </div>
         );
     }
