@@ -26,6 +26,7 @@ import {
     viewToDo,
     toggleIsLoading
 } from "../../../../Redux/Actions";
+import shortid from "shortid";
 
 function ToDo(props) {
   // table icons
@@ -95,18 +96,24 @@ function ToDo(props) {
                 data={state.data}
                 onRowClick={(event, rowData) => props.viewToDo(rowData)}
                 editable={{
-                    onRowAdd: newData =>
-                        new Promise(resolve => {
-                            setTimeout(() => {
-                                resolve();
-                                setState(prevState => {
-                                    const data = [...prevState.data];
-                                    data.push(newData);
-                                    return { ...prevState, data };
-                                });
-                                props.addToDo(newData);
-                            }, 600);
-                        }),
+                    // onRowAdd: newData =>
+                    //     new Promise((resolve, reject) => {
+                    //         console.log(newData);
+                            
+                    //         if (newData.title === undefined || newData.description === undefined || newData.date === undefined || newData.complete === undefined)
+                    //             reject()
+                    //         else
+                    //         setTimeout(() => {
+                    //             resolve();
+                    //             newData._id = shortid.generate()
+                    //             setState(prevState => {
+                    //                 const data = [...prevState.data];
+                    //                 data.push(newData);
+                    //                 return { ...prevState, data };
+                    //             });
+                    //             props.addToDo(newData);
+                    //         }, 600);
+                    //     }),
                     onRowUpdate: (newData, oldData) =>
                         new Promise(resolve => {
                             setTimeout(() => {
@@ -121,18 +128,18 @@ function ToDo(props) {
                                 }
                             }, 600);
                         }),
-                    onRowDelete: oldData =>
-                        new Promise(resolve => {
-                            setTimeout(() => {
-                                resolve();
-                                setState(prevState => {
-                                    const data = [...prevState.data];
-                                    data.splice(data.indexOf(oldData), 1);
-                                    return { ...prevState, data };
-                                });
-                                props.deleteToDo(oldData._id);
-                            }, 600);
-                        })
+                    // onRowDelete: oldData =>
+                    //     new Promise(resolve => {
+                    //         setTimeout(() => {
+                    //             resolve();
+                    //             setState(prevState => {
+                    //                 const data = [...prevState.data];
+                    //                 data.splice(data.indexOf(oldData), 1);
+                    //                 return { ...prevState, data };
+                    //             });
+                    //             props.deleteToDo(oldData._id);
+                    //         }, 600);
+                    //     })
                 }}
             />
         </div>
@@ -150,3 +157,4 @@ export default connect(mapStateToProps, {
     viewToDo,
     toggleIsLoading
 })(ToDo);
+

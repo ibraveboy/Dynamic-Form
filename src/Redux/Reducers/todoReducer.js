@@ -2,13 +2,13 @@ import { SET_TODO_LIST, ADD_TODO, UPDATE_TODO, DELETE_TODO, VIEW_TODO, HIDE_TODO
 
 const initialState = {
     columns: [
-        { title: 'Title', field: 'title' },
-        { title: 'Description', field: 'description' },
-        { title: 'Deadline', field: 'date', type: 'date' },
+        { title: 'Title', field: 'title',editable:'never' },
+        { title: 'Description', field: 'description',editable:'never' },
+        { title: 'Deadline', field: 'date', type: 'date',editable:'never' },
         {
             title: 'Status',
             field: 'complete',
-            lookup: { false: 'incomplete', true: 'complete' },
+            lookup: { false: 'pending', true: 'completed','started':'started' },
         },
       ],
     todoList: [],
