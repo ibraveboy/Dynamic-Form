@@ -28,3 +28,12 @@ export const TOGGLE_USER_LOADER = "TOGGLE_USER_LOADER"
 export const SET_NOTICE = "SET_NOTICE"
 export const TOGGLE_DRAWER = "TOGGLE_DRAWER"
 
+// ToDO constants
+
+export const SET_TODO_LIST = "SET_TODO_LIST"
+export const ADD_TODO = "ADD_TODO"
+export const UPDATE_TODO = "UPDATE_TODO"
+export const DELETE_TODO = "DELETE_TODO"
+export const VIEW_TODO = "VIEW_TODO"
+export const HIDE_TODO = "HIDE_TODO"
+export const TOGGLE_IS_LOADING = "TOGGLE_IS_LOADING"

@@ -6,6 +6,7 @@ import { Redirect } from "react-router-dom";
 import NavBar from "../../Components/Dashboard/NavBar/NavBar";
 import SideBar from "../../Components/Dashboard/SideBar/SideBar";
 import { withStyles } from "@material-ui/core";
+import ToDoModal from "../../Components/Dashboard/Overview/Modals/ToDoModal/ToDoModal";
 const styles = (theme)=>({
     sideContent: {
         transition: theme.transitions.create("margin"),
@@ -33,6 +34,7 @@ class Dashboard extends Component {
                         <Route path="/" component={Overview} />
                     </Switch>
                 </div>
+                <ToDoModal />
             </Fragment>
         );
     }
