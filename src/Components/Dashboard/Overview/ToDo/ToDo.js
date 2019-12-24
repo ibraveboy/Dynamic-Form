@@ -26,7 +26,6 @@ import {
     viewToDo,
     toggleIsLoading
 } from "../../../../Redux/Actions";
-import shortid from "shortid";
 
 function ToDo(props) {
   // table icons
@@ -94,6 +93,12 @@ function ToDo(props) {
                 isLoading={props.isLoading}
                 columns={state.columns}
                 data={state.data}
+                style={{paddingRight:10,paddingLeft:10}}
+                options={
+                    {
+                        search: false
+                    }
+                }
                 onRowClick={(event, rowData) => props.viewToDo(rowData)}
                 editable={{
                     // onRowAdd: newData =>

@@ -45,8 +45,8 @@ class ToDoModal extends Component {
                             <Typography variant="caption">
                                 {this.props.todoModal.todo
                                     ? this.props.todoModal.todo.complete
-                                        ? "completed"
-                                        : "incomplete"
+                                        ? (this.props.todoModal.todo.complete === "started"?"started":"completed")
+                                        : ("pending")
                                     : "Todo Status"}
                             </Typography>
                         </Grid>

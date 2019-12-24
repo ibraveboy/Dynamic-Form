@@ -10,9 +10,12 @@ import { connect } from "react-redux";
 import { toggleDrawer } from "../../../Redux/Actions";
 import { Hidden, Drawer, IconButton } from "@material-ui/core";
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { withRouter, Link } from "react-router-dom";
 
 class SideBar extends Component {
     render() {
+        console.log(this.props,"sidebar");
+        
         const { classes } = this.props;
         const sideList = () => {
             return (
@@ -32,20 +35,25 @@ class SideBar extends Component {
                         </div>
                     </List>
                     <List>
+                            <Link to="/admin">
                         <ListItem button key={"overview"}>
                             <ListItemIcon>
                                 <InboxIcon />
                             </ListItemIcon>
                             <ListItemText primary={"Overview"} />
                         </ListItem>
+                            </Link>
                     </List>
                     <List>
-                        <ListItem button key={"posts"}>
+                        <Link to="/admin/companies">
+
+                        <ListItem button key={"companies"}>
                             <ListItemIcon>
                                 <InboxIcon />
                             </ListItemIcon>
-                            <ListItemText primary={"Posts"} />
+                            <ListItemText primary={"Companies"} />
                         </ListItem>
+                        </Link>
                     </List>
                 </div>
             );
@@ -53,7 +61,7 @@ class SideBar extends Component {
 
         return (
             <React.Fragment>
-                <Hidden mdDown implementation="js">
+                <Hidden smDown implementation="js">
                     <Drawer
                         variant="persistent"
                         open
@@ -66,7 +74,7 @@ class SideBar extends Component {
                         {sideList()}
                     </Drawer>
                 </Hidden>
-                <Hidden lgUp implementation="js">
+                <Hidden mdUp implementation="js">
                     <Drawer
                         variant="temporary"
                         open={this.props.open}
@@ -84,6 +92,7 @@ class SideBar extends Component {
 const mapStateToProps = state => {
     return state.userReducer;
 };
-export default connect(mapStateToProps, { toggleDrawer })(
-    withStyles(styles)(SideBar)
+export default withRouter(connect(mapStateToProps, { toggleDrawer })(
+    withStyles(styles)(SideBar))
 );
+

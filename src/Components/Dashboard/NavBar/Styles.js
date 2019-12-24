@@ -8,7 +8,10 @@ export const styles = theme => ({
         zIndex: theme.zIndex.drawer + 1,
       },
     menuButton: {
-        marginRight: theme.spacing(2)
+        marginRight: theme.spacing(2),
+        [theme.breakpoints.up("md")]: {
+            display: "none"
+        }
     },
     title: {
         display: "none",

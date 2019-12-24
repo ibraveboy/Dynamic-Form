@@ -66,7 +66,7 @@ class NavBar extends Component {
                 <MenuItem onClick={this.handleMenuClose}>My account</MenuItem>
             </Menu>
         );
-
+        
         const mobileMenuId = "primary-search-account-menu-mobile";
         const renderMobileMenu = (
             <Menu
@@ -111,7 +111,7 @@ class NavBar extends Component {
 
         return (
             <div className={classes.grow}>
-                <AppBar position="relative" className={classes.appBar}>
+                <AppBar position="fixed" className={classes.appBar}>
                     <Toolbar>
                         <IconButton
                             edge="start"

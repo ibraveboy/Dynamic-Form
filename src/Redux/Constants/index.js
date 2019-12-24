@@ -37,3 +37,8 @@ export const DELETE_TODO = "DELETE_TODO"
 export const VIEW_TODO = "VIEW_TODO"
 export const HIDE_TODO = "HIDE_TODO"
 export const TOGGLE_IS_LOADING = "TOGGLE_IS_LOADING"
+
+// Notification Menu
+
+export const SET_NOTIFICATION_ELEM = "SET_NOTIFICATION_ELEM"
+export const SET_NOTIFICATIONS = "SET_NOTIFICATIONS"
