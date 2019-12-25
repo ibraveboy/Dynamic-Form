@@ -91,3 +91,21 @@ export const setAuthHeaders = (token) => {
         delete axios.defaults.headers.common["Authorization"] 
     }
 }
+
+export const sortRelevant = (productA, productB,q) => {
+        
+    let regExp = eval("/" + q.toLowerCase().split(" ").join("|") + "/")
+    
+    if (q.split(" ").length === 1) {
+        if (productA.brand.toLowerCase() === q.toLowerCase() && productB.brand.toLowerCase() === q.toLowerCase())
+            return 0
+        else if (productB.brand.toLowerCase() === q.toLowerCase()){
+            return 1
+        }
+        else if (productA.brand.toLowerCase() === q.toLowerCase()) {
+            return -1
+        }
+    }
+    
+    return productB.brand.toLowerCase().match(regExp).length - productA.brand.toLowerCase().match(regExp).length
+}
