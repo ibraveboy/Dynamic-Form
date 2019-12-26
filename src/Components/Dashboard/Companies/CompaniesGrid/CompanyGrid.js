@@ -7,20 +7,38 @@ import {
     CardContent,
     CardActionArea,
     CardMedia,
+    withStyles,
+    Divider
 } from "@material-ui/core";
-import img from "../../../../assets/avatar.png"
+import img from "../../../../assets/cancel-image.png"
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
-export default class CompanyGrid extends Component {
+const Styles = {
+    divider: {
+        marginTop: 20,
+        marginBottom:20,
+    },
+    card: {
+        maxWidth: 300,
+        minWidth:200,
+    },
+    media: {
+        height: 140,
+        backgroundSize:"contain",
+    },
+  };
+
+class CompanyGrid extends Component {
     render() {
+        const { classes } = this.props
         return (
-            <Grid item xs={6} sm={4} md={3} className="company-card">
-                <Card variant="outlined">
+            <Grid item className="company-card">
+                <Card variant="outlined" className={classes.card}>
                     <CardActionArea>
                         <CardMedia
-                            component="img"
-                            height="140"
+                            className={classes.media}
                             alt={this.props.name}
-                            src={this.props.img?this.props.img:img}
+                            image={this.props.img?this.props.img:img}
                         />
                         <CardContent>
                             <Typography gutterBottom variant="h5" className="company-title">
@@ -33,15 +51,16 @@ export default class CompanyGrid extends Component {
                                 doloribus totam ad porro quo iusto ea aspernatur
                                 eaque non. Praesentium, nemo?
                             </Typography>
+                            <Divider variant="fullWidth" className={classes.divider} />
                             <Grid container justify="space-between" >
                                 <Grid item xs={6}>
                                     <Typography variant="subtitle2" title="Certification Date">
-                                        {(new Date(this.props.date)).toLocaleDateString()}
+                                        {this.props.date ? (new Date(this.props.date)).toLocaleDateString():"N/A"}
                                     </Typography>
                                 </Grid>
                                 <Grid item>
                                     <Typography variant="subtitle2" title="Certified">
-                                        {this.props.certified}%
+                                        {this.props.certified === "100" ? (<CheckCircleIcon color="primary"/>):(this.props.certified+"%")}
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -57,3 +76,5 @@ export default class CompanyGrid extends Component {
         );
     }
 }
+
+export default withStyles(Styles)(CompanyGrid)

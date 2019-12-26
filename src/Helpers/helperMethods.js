@@ -93,7 +93,7 @@ export const setAuthHeaders = (token) => {
 }
 
 export const sortRelevant = (productA, productB,q) => {
-        
+    // eslint-disable-next-line
     let regExp = eval("/" + q.toLowerCase().split(" ").join("|") + "/")
     
     if (q.split(" ").length === 1) {

@@ -9,13 +9,12 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import { connect } from "react-redux";
 import { toggleDrawer } from "../../../Redux/Actions";
 import { Hidden, Drawer, IconButton } from "@material-ui/core";
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import { withRouter, Link } from "react-router-dom";
 
 class SideBar extends Component {
     render() {
-        console.log(this.props,"sidebar");
-        
+
         const { classes } = this.props;
         const sideList = () => {
             return (
@@ -27,32 +26,33 @@ class SideBar extends Component {
                 >
                     <List>
                         <div className={classes.drawerHeader}>
-                            <IconButton onClick={event => this.props.toggleDrawer(event, false)}>
-                                
-                                    <ChevronLeftIcon />
-                                
+                            <IconButton
+                                onClick={event =>
+                                    this.props.toggleDrawer(event, false)
+                                }
+                            >
+                                <ChevronLeftIcon />
                             </IconButton>
                         </div>
                     </List>
                     <List>
-                            <Link to="/admin">
-                        <ListItem button key={"overview"}>
-                            <ListItemIcon>
-                                <InboxIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={"Overview"} />
-                        </ListItem>
-                            </Link>
+                        <Link to="/admin" color="black" className={classes.linkItem}>
+                            <ListItem button key={"overview"}>
+                                <ListItemIcon>
+                                    <InboxIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={"Overview"} />
+                            </ListItem>
+                        </Link>
                     </List>
                     <List>
-                        <Link to="/admin/companies">
-
-                        <ListItem button key={"companies"}>
-                            <ListItemIcon>
-                                <InboxIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={"Companies"} />
-                        </ListItem>
+                        <Link to="/admin/companies" color="black" className={classes.linkItem}>
+                            <ListItem button key={"companies"}>
+                                <ListItemIcon>
+                                    <InboxIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={"Companies"} />
+                            </ListItem>
                         </Link>
                     </List>
                 </div>
@@ -92,7 +92,6 @@ class SideBar extends Component {
 const mapStateToProps = state => {
     return state.userReducer;
 };
-export default withRouter(connect(mapStateToProps, { toggleDrawer })(
-    withStyles(styles)(SideBar))
+export default withRouter(
+    connect(mapStateToProps, { toggleDrawer })(withStyles(styles)(SideBar))
 );
-

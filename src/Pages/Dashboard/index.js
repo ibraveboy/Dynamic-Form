@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import NavBar from "../../Components/Dashboard/NavBar/NavBar";
 import SideBar from "../../Components/Dashboard/SideBar/SideBar";
-import { withStyles } from "@material-ui/core";
+import { withStyles,CssBaseline } from "@material-ui/core";
 import ToDoModal from "../../Components/Dashboard/Overview/Modals/ToDoModal/ToDoModal";
 import Companies from "./Companies/Companies";
 const styles = (theme)=>({
@@ -28,6 +28,7 @@ class Dashboard extends Component {
         }
         return (
             <Fragment>
+                <CssBaseline />
                 <NavBar />
                 <SideBar />
                 <div className={classes.sideContent}>
@@ -47,3 +48,7 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, null)(withStyles(styles)(Dashboard));
+
+/*
+
+*/

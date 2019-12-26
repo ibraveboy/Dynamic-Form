@@ -4,7 +4,7 @@ import { SET_COMPANIES, TOGGLE_COMPANY_LOADER, SET_COMPANY_ERRORS } from "../Con
 
 export const companySearchHandler = (q) => {
     return dispatch => {
-        axios.get("http://localhost:3001/companies/search?q=" + q)
+        axios.get("https://testapi.io/api/ibraveboy/company/search?q=" + q)
             .then(res => {
                 let sorted = res.data.sort((a,b) => {
                     return sortRelevant(a,b,q)
