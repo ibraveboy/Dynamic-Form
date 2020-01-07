@@ -1,0 +1,17 @@
+.todo-modal{
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.todo-modal .todo-content{
+    padding: 50px 50px;
+}
+
+.todo-modal .todo-content .todo-title{
+    padding: 0px 0px 10px;
+    text-transform: capitalize;
+}
+.todo-modal .todo-content .todo-desc{
+    margin-bottom: 10px;
+}

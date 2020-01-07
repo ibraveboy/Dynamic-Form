@@ -1,4 +1,4 @@
-import "./ToDo.css";
+import "./ToDo.scss";
 import React, { useEffect } from "react";
 import { forwardRef } from "react";
 import AddBox from "@material-ui/icons/AddBox";

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./CompanyGrid.css"
+import "./CompanyGrid.scss"
 import {
     Typography,
     Grid,
@@ -12,6 +12,7 @@ import {
 } from "@material-ui/core";
 import img from "../../../../assets/cancel-image.png"
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { withRouter } from "react-router-dom";
 
 const Styles = {
     divider: {
@@ -29,12 +30,15 @@ const Styles = {
   };
 
 class CompanyGrid extends Component {
+    goToCompanyDetails = (id) => {
+        this.props.history.push("/admin/company/"+id)
+    }
     render() {
         const { classes } = this.props
         return (
             <Grid item className="company-card">
                 <Card variant="outlined" className={classes.card}>
-                    <CardActionArea>
+                    <CardActionArea onClick={() => { this.goToCompanyDetails(this.props.id) }}>
                         <CardMedia
                             className={classes.media}
                             alt={this.props.name}
@@ -77,4 +81,4 @@ class CompanyGrid extends Component {
     }
 }
 
-export default withStyles(Styles)(CompanyGrid)
+export default withRouter(withStyles(Styles)(CompanyGrid))

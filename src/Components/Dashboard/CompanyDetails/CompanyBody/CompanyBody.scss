@@ -1,0 +1,19 @@
+.company-details{
+    .company-body{
+        margin:20px 0px 50px;
+        .company-body-inner{
+            padding: 20px;
+            .company-body-inner-item{
+                margin-bottom:30px;
+                .inner-item-details{
+                    .inner-sub-item{
+                        min-width: 220px;
+                        .sub-item-title{
+                            color:grey;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

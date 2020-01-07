@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import React, { Component } from "react";
 import { Modal, Typography, Paper, Grid } from "@material-ui/core";
 import { hideToDo } from "../../../../../Redux/Actions";
-import "./TodoModal.css";
+import "./TodoModal.scss";
 
 class ToDoModal extends Component {
     render() {

@@ -1,9 +1,10 @@
-import { SET_COMPANIES, TOGGLE_COMPANY_LOADER,SET_COMPANY_ERRORS } from "../Constants"
+import { SET_COMPANIES, TOGGLE_COMPANY_LOADER,SET_COMPANY_ERRORS, SET_SINGLE_COMPANY } from "../Constants"
 
 const initialState = {
     companies: [],
     loader: false,
-    error:null
+    error: null,
+    company:null,
 }
 
 const companyReducer = (state = initialState, action) => {
@@ -13,6 +14,14 @@ const companyReducer = (state = initialState, action) => {
             companies: action.payload,
             loader: false,
             error:null
+        }
+    }
+    else if (action.type === SET_SINGLE_COMPANY) {
+        return {
+            ...state,
+            company: action.payload,
+            error: null,
+            loader:false
         }
     }
     else if (action.type === TOGGLE_COMPANY_LOADER) {

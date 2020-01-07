@@ -12,7 +12,7 @@ import {
     CircularProgress
 } from "@material-ui/core";
 import SearchIcon from '@material-ui/icons/Search';
-import "./Companies.css";
+import "./Companies.scss";
 import CompanyGrid from "../../../Components/Dashboard/Companies/CompaniesGrid/CompanyGrid";
 import shortid from "shortid";
 import { toggleCompanyLoader,companySearchHandler } from "../../../Redux/Actions/companyActions";
@@ -50,7 +50,7 @@ class Companies extends Component {
 
     render() {
         let companies = this.props.companies.map(company => {
-            return <CompanyGrid name={company.brand} date={company.date} certified={company.certified} img={company.img} key={shortid.generate()}/>
+            return <CompanyGrid id={company.id} name={company.brand} date={company.date} certified={company.certified} img={company.img} key={shortid.generate()}/>
         })
         const { classes } = this.props;
         return (

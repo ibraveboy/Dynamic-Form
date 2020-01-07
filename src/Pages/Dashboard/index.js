@@ -8,6 +8,7 @@ import SideBar from "../../Components/Dashboard/SideBar/SideBar";
 import { withStyles,CssBaseline } from "@material-ui/core";
 import ToDoModal from "../../Components/Dashboard/Overview/Modals/ToDoModal/ToDoModal";
 import Companies from "./Companies/Companies";
+import CompanyDetails from "./CompanyDetails/CompanyDetails";
 const styles = (theme)=>({
     sideContent: {
         transition: theme.transitions.create("margin"),
@@ -35,6 +36,7 @@ class Dashboard extends Component {
                     <Switch>
                         <Route path="/admin" component={Overview} exact/>
                         <Route path="/admin/companies" component={Companies} />
+                        <Route path="/admin/company/:id" component={CompanyDetails} />
                     </Switch>
                 </div>
                 <ToDoModal />
@@ -49,6 +51,3 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, null)(withStyles(styles)(Dashboard));
 
-/*
-
-*/
